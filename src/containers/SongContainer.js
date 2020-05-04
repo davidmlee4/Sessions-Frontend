@@ -1,6 +1,8 @@
 import React from 'react'
 import songs from "../songs.js"
 import SongCard from "../components/SongCard"
+import { Grid2 } from '../styled.js'
+import styled from 'styled-components'
 
 class SongContainer extends React.Component{
 
@@ -40,9 +42,9 @@ class SongContainer extends React.Component{
 
     render(){
         return (
-            <div>
+            <Grid2>
                 {this.renderSongs()}
-            </div>
+            </Grid2>
         )
     }
 }

@@ -5,9 +5,16 @@ import CreatePlaylistForm from "../components/CreatePlaylistForm"
 class PlaylistContainer extends React.Component {
 
     state={
-        playlists: [],
+        userPlaylists: [],
         title: "",
-        showForm: false
+        showForm: false,
+        update: ""
+    }
+
+    componentDidMount(){
+        this.setState({
+            userPlaylists: this.props.userPlaylists
+        })
     }
 
     handleChange = (event) => {
@@ -60,6 +67,8 @@ class PlaylistContainer extends React.Component {
                 allSongs={this.props.allSongs} 
                 allSongPlaylists={this.props.allSongPlaylists}
                 deleteSongPlaylist={this.props.deleteSongPlaylist}
+                updateUserPlaylists={this.props.updateUserPlaylists}
+                loadPlaylist={this.props.loadPlaylist}
             />
         )
     }

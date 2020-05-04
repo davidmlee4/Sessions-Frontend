@@ -1,21 +1,27 @@
 import React from 'react'
 import { Link } from "react-router-dom"
+import { NavButton, NavStyle, AppName } from "../styled";
+
 
 const NavBar = () => {
     return (
-        <div>
-            <h1>Sessions</h1>
+        <NavStyle>
+            <AppName>Sessions</AppName>
             <Link to="/">
-                <div>
-                    Home
-                </div>
+                <NavButton>
+                    <div>
+                        Home
+                    </div>
+                </NavButton>
             </Link>
             <Link to="/browse"> 
-                <div>
-                    Browse
-                </div>
+                <NavButton>
+                    <div>
+                        Browse
+                    </div>
+                </NavButton>
             </Link>
-        </div>
+        </NavStyle>
     )
 }
 

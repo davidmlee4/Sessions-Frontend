@@ -43,11 +43,13 @@ class MainContainer extends React.Component {
         })
     }
 
+    //adding songs
     addSongPlaylist = (newSongPlaylist) => {
         let allSongPlaylists = [...this.state.allSongPlaylists, newSongPlaylist]
         this.setState({allSongPlaylists})
     }
 
+    //deleting songs off playlists
     deleteSongPlaylist = (songPlaylistId) => {
         let allSongPlaylists = this.state.allSongPlaylists
         let songPlaylistIndex = allSongPlaylists.findIndex(sp => sp.id === songPlaylistId)
@@ -57,9 +59,19 @@ class MainContainer extends React.Component {
         // allSongPlaylists.splice()
     }
 
+    //deleting playlist
+    updateUserPlaylists = (playlistId) => {
+        // let allPlaylists = this.state.allPlaylists
+        // let index = allPlaylists.findIndex(p=> p.id === playlistId)
+        let userPlaylists = this.state.userPlaylists 
+        let playlistIndex = userPlaylists.findIndex(playlist => playlist.id === playlistId)
+        console.log("this playlist has been deleted")
+        userPlaylists.splice(playlistIndex, 1)
+        this.setState({userPlaylists: [...userPlaylists]})
+    }
+
 
     render () {
-        console.log(this.state.allSongPlaylists)
         return (
             <div>
                 {/* <LoginForm/>
@@ -81,6 +93,8 @@ class MainContainer extends React.Component {
                                 addPlaylist={this.addPlaylist}
                                 deleteSongPlaylist={this.deleteSongPlaylist}
                                 allSongPlaylists={this.state.allSongPlaylists}
+                                updateUserPlaylists={this.updateUserPlaylists}
+                                loadPlaylist={this.props.loadPlaylist}
                             />
                         )}
                     />

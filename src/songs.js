@@ -6,6 +6,14 @@ import AnimalCrossing from "./songs/Animal Crossing.mp3"
 import NoIdea from "./songs/no idea.mp3"
 import ily from "./songs/ily.mp3"
 ///change to object 
-const songs = [Toosie, Bored, Signs, Nothing, AnimalCrossing, NoIdea, ily]
+const songs = {
+    "Toosie Slide": Toosie, 
+    "bored in the house but it's a HOUSE remix": Bored, 
+    "Signs": Signs, 
+    "Nothing": Nothing, 
+    "when you feel like a Savage playing Animal Crossing": AnimalCrossing, 
+    "no idea his song could be funky": NoIdea, 
+    "ily (feat. Emilee) remix": ily
+}
 
 export default songs

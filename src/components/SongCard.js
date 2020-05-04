@@ -65,7 +65,8 @@ class SongCard extends React.Component {
     render(){
         return (
             <div>
-                {this.props.showButton ? <button onClick={this.handleAddClick}>+</button> : <button onClick={this.handleDeleteClick}>-</button>} {this.props.song.title} - {this.props.song.artist}
+                {this.props.edit ? <button onClick={this.handleDeleteClick}>Delete</button> : null} {this.props.showButton && <button onClick={this.handleAddClick}>+</button> } 
+                {this.props.song.title} - {this.props.song.artist}
                 <div>
                     {this.state.showAddToPlaylistForm && <AddSongToPlaylistForm userPlaylists={this.props.userPlaylists} playlist={this.state.playlist} addSongToPlaylist={this.addSongToPlaylist} handlePlaylistSelection={this.handlePlaylistSelection}/>}
                 </div>
