@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 // import { Switch, Route } from "react-router-dom";
-import AudioPlayer from 'react-h5-audio-player';
+import AudioPlayer, { RHAP_UI } from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css';
 import MainContainer from "./containers/MainContainer";
 // import AudioPlayer from "./components/AudioPlayer"
@@ -9,8 +9,7 @@ import NavBar from "./components/NavBar";
 import AnimalCrossing from "./songs/Animal Crossing.mp3"
 import songs from "./songs"
 import { BrowserRouter as Router } from "react-router-dom";
-import { AppDiv } from "./styled";
-
+import { Grid, Row, Col, ArtistPlaying, TitlePlaying, Current,Image, CurrentPlaylist } from "./styled";
 
 
 
@@ -21,11 +20,10 @@ class App extends React.Component {
     songs: songs,
     counter: 0,
     queue: [],
-    playlistToLoad: []
+    playlistToLoad: [],
+    albumArtworkArray: []
   }
 
-  //need previous song state to handlePrevious on click
-  //show current song playing
 
   // componentDidMount = () => {
   //   this.setState({
@@ -43,6 +41,7 @@ class App extends React.Component {
     this.setState({counter})
   }
 
+
   handlePrevious = () => {
     if(this.state.counter === 0){
       let counter = 0 
@@ -53,38 +52,105 @@ class App extends React.Component {
     }
   }
 
-  findSong = () => {
-    return this.state.songs['Toosie Slide']
-  }
 
-  loadPlaylist = (playlist) => {
+  loadPlaylist = (playlist,title) => {
     //creates an array of songs by their title and artist
-    let playlistToLoad = playlist.map(song => song.title + "-" + song.artist)
+    let playlistToLoad = playlist.map(song => [song.title,song.artist,title])
     this.setState({playlistToLoad})
 
     //creates an array of songs by querying database by title
     let queue = playlist.map(song => songs[song.title])
     this.setState({queue})
 
+    let albumArtworkArray = playlist.map(song => song.media)
+    this.setState({albumArtworkArray})
+
     //reset the counter to zero on each load playlist
     let counter = 0 
     this.setState({counter})
   }
 
+  loadSongToPlay = (song) => {
+
+    let one = [song.title, song.artist, ""]
+    let playlistToLoad = [one, ...this.state.playlistToLoad]
+    this.setState({playlistToLoad})
+
+    let queue = [songs[song.title], ...this.state.queue]
+    this.setState({queue})
+
+    let albumArtworkArray = [song.media,...this.state.albumArtworkArray]
+    this.setState({albumArtworkArray})
+
+    let counter = 0
+    this.setState({counter})
+
+  }
+
+  loadCurrentTitle = () => {
+    if(this.state.playlistToLoad[this.state.counter] !== undefined){
+      return this.state.playlistToLoad[this.state.counter][0]
+    } else {
+      return
+    }
+  }
+
+  loadCurrentArtist = () => {
+    if(this.state.playlistToLoad[this.state.counter] !== undefined){
+      return this.state.playlistToLoad[this.state.counter][1]
+    } else {
+      return
+    }
+  }
+
+  loadPlaylistTitle = () => {
+    if(this.state.playlistToLoad[this.state.counter] !== undefined){
+      return this.state.playlistToLoad[this.state.counter][2]
+    }
+  }
+
+  loadAlbumArtwork = () => {
+    if(this.state.playlistToLoad[this.state.counter] !== undefined){
+      return this.state.albumArtworkArray[this.state.counter]
+    }
+  }
+
   render() {
-    console.log(this.state.queue)
+    console.log(this.state.albumArtworkArray)
       return (
         <Router>
           <NavBar/> 
-          <MainContainer loadPlaylist={this.loadPlaylist}/>
           <div>
-            <AudioPlayer src={this.state.queue[this.state.counter]} showSkipControls onClickNext={this.handleNext} onClickPrevious={this.handlePrevious} onEnded={this.handleNext} autoPlay/>
-            <div>
-              Current:
-                <h4>{this.state.playlistToLoad[0] && this.state.playlistToLoad[this.state.counter].split("-")[0]}</h4>
-                <h5>{this.state.playlistToLoad[0] && this.state.playlistToLoad[this.state.counter].split("-")[1]}</h5>
-            </div>
+            <AudioPlayer 
+              layout="stacked-reverse" 
+              src={this.state.queue[this.state.counter] && this.state.queue[this.state.counter]} 
+              showSkipControls 
+              onClickNext={this.handleNext} 
+              onClickPrevious={this.handlePrevious} 
+              onEnded={this.handleNext} 
+              autoPlay
+            />
           </div>
+          <Grid>
+            <Row>
+              <Col>
+                <MainContainer 
+                loadPlaylist={this.loadPlaylist}
+                loadSongToPlay={this.loadSongToPlay}
+              />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                  <Current>{this.state.playlistToLoad[0] && "Currently Playing"}</Current>
+                  <CurrentPlaylist>{this.loadPlaylistTitle()}</CurrentPlaylist>
+                  {this.state.albumArtworkArray[this.state.counter] && <Image><img src={this.loadAlbumArtwork()} width="275" height="275"/></Image>}
+                  <TitlePlaying>{this.loadCurrentTitle()}</TitlePlaying>
+                  <ArtistPlaying>{this.loadCurrentArtist()}</ArtistPlaying>
+              </Col> 
+            </Row>
+          </Grid>
+       
         </Router>
     );
   }

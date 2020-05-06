@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
 import SongCard from "./SongCard"
-import { Playlists } from '../styled.js'
+import { Playlists, PlaylistTitle, Button, PlaylistDeleteButton } from '../styled.js'
 
 
 class Playlist extends React.Component {
@@ -33,12 +33,8 @@ class Playlist extends React.Component {
 
     // toggles showing the songs on the playlist
     handleShowClick = () => {
-        if(this.state.songIds[0] === undefined){
-            alert("This playlist doesn't contain any songs")
-        } else {
         let show = !this.state.show
         this.setState({show})
-        }
     }
 
     // toggles showing the delete buttons for each song (edit state)
@@ -66,17 +62,19 @@ class Playlist extends React.Component {
                 filteredSongPlaylists={this.state.filteredSongPlaylists}
                 deleteSongPlaylist={this.props.deleteSongPlaylist}
                 edit={this.state.edit}
+                loadSongToPlay={this.props.loadSongToPlay}
             />
         )
         
     }
 
+    // passes up array of songs back up to App to play in audio player
     load = () => {
         let playlistSongs = this.state.songIds.map(id => {
             return this.props.allSongs.find(song => song.id === id)
         })
 
-        this.props.loadPlaylist(playlistSongs)
+        this.props.loadPlaylist(playlistSongs, this.props.playlist.title)
 
     }
 
@@ -101,10 +99,10 @@ class Playlist extends React.Component {
     render(){
         return (
             <Playlists>
-                <button onClick={this.handleShowClick}>{this.state.show ? "Hide Songs" : "Show Songs"}</button> {this.props.playlist.title}<button onClick={this.deletePlaylist}>Delete Playlist</button> 
+                <PlaylistTitle onClick={this.handleShowClick}>{this.props.playlist.title}</PlaylistTitle> 
                 <div>
                     <div>
-                        {this.state.show && <button onClick={this.load}>PLAY</button>}{this.state.show &&  <button onClick={this.handleEditClick}>EDIT</button>}
+                        {this.state.show && <Button onClick={this.load}>PLAY</Button>}{this.state.show &&  <Button onClick={this.handleEditClick}>EDIT</Button>}{this.state.edit && <PlaylistDeleteButton onClick={this.deletePlaylist}>Delete Playlist</PlaylistDeleteButton> }
                     </div>
                     {this.state.show && this.renderSongsOnPlaylist()}
                 </div>

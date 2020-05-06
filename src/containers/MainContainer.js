@@ -95,6 +95,7 @@ class MainContainer extends React.Component {
                                 allSongPlaylists={this.state.allSongPlaylists}
                                 updateUserPlaylists={this.updateUserPlaylists}
                                 loadPlaylist={this.props.loadPlaylist}
+                                loadSongToPlay={this.props.loadSongToPlay}
                             />
                         )}
                     />
@@ -108,6 +109,7 @@ class MainContainer extends React.Component {
                                 userPlaylists={this.state.userPlaylists}
                                 addSongPlaylist={this.addSongPlaylist}
                                 allSongPlaylists={this.state.allSongPlaylists}
+                                loadSongToPlay={this.props.loadSongToPlay}
                             />
                         )}
                     />

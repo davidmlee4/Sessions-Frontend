@@ -1,5 +1,7 @@
 import React from 'react'
 import AddSongToPlaylistForm from "./AddSongToPlaylistForm"
+import { DeleteButton, Grid2, Button, Row, Col2, Col3, Songs, DeleteButtonHolder } from '../styled.js'
+
 
 class SongCard extends React.Component {
 
@@ -55,7 +57,7 @@ class SongCard extends React.Component {
                 .then(songPlaylist => {
                     console.log("success",songPlaylist)
                     this.props.addSongPlaylist(songPlaylist)
-                    alert("Song has been added to playlist.")
+                    this.setState({showAddToPlaylistForm: false})
                 })
             }
             // need to re-render songs in playlist container by fetching songPlaylists
@@ -64,13 +66,22 @@ class SongCard extends React.Component {
     
     render(){
         return (
-            <div>
-                {this.props.edit ? <button onClick={this.handleDeleteClick}>Delete</button> : null} {this.props.showButton && <button onClick={this.handleAddClick}>+</button> } 
-                {this.props.song.title} - {this.props.song.artist}
-                <div>
-                    {this.state.showAddToPlaylistForm && <AddSongToPlaylistForm userPlaylists={this.props.userPlaylists} playlist={this.state.playlist} addSongToPlaylist={this.addSongToPlaylist} handlePlaylistSelection={this.handlePlaylistSelection}/>}
-                </div>
-            </div>
+            <Songs>
+                {this.props.edit ? <DeleteButton onClick={this.handleDeleteClick}>Remove</DeleteButton> : null} {this.props.showButton && <Button onClick={this.handleAddClick}>+</Button> }{this.props.showButton && <Button onClick={() => this.props.loadSongToPlay(this.props.song)}>Play</Button> } 
+                <Grid2>
+                    <Row>
+                        <Col2>
+                            {this.state.showAddToPlaylistForm && <AddSongToPlaylistForm userPlaylists={this.props.userPlaylists} playlist={this.state.playlist} addSongToPlaylist={this.addSongToPlaylist} handlePlaylistSelection={this.handlePlaylistSelection}/>}
+                            {this.props.song.title}
+                        </Col2>
+                    </Row> 
+                    <Row>
+                        <Col3>
+                            {this.props.song.artist}
+                        </Col3>
+                    </Row>
+                </Grid2>
+            </Songs>
         )
     }
 }

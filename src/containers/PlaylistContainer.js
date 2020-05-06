@@ -1,6 +1,7 @@
 import React from 'react'
 import Playlist from '../components/Playlist'
 import CreatePlaylistForm from "../components/CreatePlaylistForm"
+import { PlaylistContainerHeader, PlaylistButton } from "../styled.js"
 
 class PlaylistContainer extends React.Component {
 
@@ -42,7 +43,6 @@ class PlaylistContainer extends React.Component {
         .then(res=>res.json())
         .then(data=> {this.props.addPlaylist(data)})
         this.setState({title: ""})
-        alert("New playlist has been created, you savage.")
     }
 
     handleClick = () => {
@@ -69,6 +69,7 @@ class PlaylistContainer extends React.Component {
                 deleteSongPlaylist={this.props.deleteSongPlaylist}
                 updateUserPlaylists={this.props.updateUserPlaylists}
                 loadPlaylist={this.props.loadPlaylist}
+                loadSongToPlay={this.props.loadSongToPlay}
             />
         )
     }
@@ -76,8 +77,8 @@ class PlaylistContainer extends React.Component {
     render(){
         return (
             <div>
-                <h3>Playlists</h3>
-                {this.state.showForm ? <button onClick={this.handleClick}>Hide Form</button> : <button onClick={this.handleClick}>Create New Playlist</button>}
+                <PlaylistContainerHeader>Playlists</PlaylistContainerHeader>
+                {this.state.showForm ? <PlaylistButton onClick={this.handleClick}>Hide Form</PlaylistButton> : <PlaylistButton onClick={this.handleClick}>Create New Playlist</PlaylistButton>}
                 {this.state.showForm && <CreatePlaylistForm title={this.state.title} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />}
                 <div>
                     {this.showPlaylists()}
